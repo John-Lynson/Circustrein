@@ -21,5 +21,11 @@ namespace Circustrein
 
             return true;
         }
+
+        public void VoegDierToe (Dier dier)
+        {
+            Dieren.Add(dier);
+            TotaalPunten += dier.Punten;
+        }
     }
 }
