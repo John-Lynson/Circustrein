@@ -13,36 +13,70 @@ namespace Circustrein
 
         public void VoegDierToe(string voedselType, string formaat)
         {
-            Dier dier = new Dier { VoedselType = voedselType, Formaat = formaat};
-            dieren.Add(dier);
+            Dier bestaanddier = dieren.FirstOrDefault(d => d.VoedselType == voedselType && d.Formaat == formaat);
+            if (bestaanddier != null)
+            {
+                bestaanddier.Aantal++;
+            }
+            else
+            {
+                Dier nieuwDier = new Dier { VoedselType = voedselType, Formaat = formaat, Aantal = 1 };
+                dieren.Add(nieuwDier);
+            }
         }
 
-        public void BerekenWagons ()
+        public void ToonAlleDieren()
         {
+            Console.WriteLine("Alle dieren:");
+            foreach (Dier dier in dieren)
+            {
+                Console.WriteLine($"Voedseltype: {dier.VoedselType}, Formaat: {dier.Formaat}, Aantal: {dier.Aantal}");
+            }
+        }
+
+        public void ToonWagons ()
+        {
+            Console.WriteLine("Wagons en hun dieren:");
+            int wagonNummer = 1;
+            foreach (Wagon wagon in wagons)
+            {
+                Console.WriteLine($"Wagon {wagonNummer}:");
+                foreach (Dier dier in wagon.Dieren)
+                {
+                    Console.WriteLine($"  - Voedseltype: {dier.VoedselType}, Formaat: {dier.Formaat}, Aantal: {dier.Aantal}");
+                }
+
+                wagonNummer++; 
+            }
+        }
+
+        public void BerekenWagons()
+        {
+            wagons.Clear(); 
+
             dieren.Sort((a, b) => b.Punten.CompareTo(a.Punten));
 
             foreach (Dier dier in dieren)
             {
-                bool added = false; 
+                int overgeblevenAantal = dier.Aantal;
 
                 foreach (Wagon wagon in wagons)
                 {
-                    if (wagon.KanDierToevoegen(dier))
+                    while (wagon.KanDierToevoegen(dier) && overgeblevenAantal > 0)
                     {
                         wagon.VoegDierToe(dier);
-                        added = true;
-                        break;
-
+                        overgeblevenAantal--;
                     }
                 }
 
-                if (added!)
+                while (overgeblevenAantal > 0)
                 {
-                    Wagon newWagon = new Wagon();
-                    newWagon.VoegDierToe(dier);
-                    wagons.Add(newWagon);
+                    Wagon nieuweWagon = new Wagon();
+                    nieuweWagon.VoegDierToe(dier);
+                    wagons.Add(nieuweWagon);
+                    overgeblevenAantal--;
                 }
             }
-        }     
+        }
     }
 }

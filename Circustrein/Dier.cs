@@ -10,6 +10,7 @@ namespace Circustrein
     {
         public string VoedselType { get; set; }
         public string Formaat { get; set; }
+        public int Aantal { get; set; } 
         public int Punten
         {
             get

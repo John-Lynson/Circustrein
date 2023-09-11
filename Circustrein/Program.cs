@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Circustrein
 {
@@ -11,23 +12,57 @@ namespace Circustrein
 
             while (true)
             {
-                Console.WriteLine("Wilt u een dier toevoegen? (ja/nee)");
-                string antwoord = Console.ReadLine().ToLower();
+                Console.WriteLine("kies een optie:");
+                Console.WriteLine("1. Voeg een dier toe");
+                Console.WriteLine("2. Toon alle dieren");
+                Console.WriteLine("3. Bereken wagons");
+                Console.WriteLine("4. Toon de wagons");
+                Console.WriteLine("5. Stop de applicatie");
 
-                if (antwoord != "ja")
+                string keuze = Console.ReadLine();
+
+                switch (keuze)
                 {
-                    break;
+                    case "1": // OPTIE 1
+                        Console.WriteLine("Voer het voedseltype van het dier in (vlees/planten)");
+                        string voedselType = Console.ReadLine().ToLower();
+
+                        Console.WriteLine("Voer het formaat van het dier in: Klein/middelmatig/groot");
+                        string formaat = Console.ReadLine().ToLower();
+
+                        Console.WriteLine("Voer het aantal van dit type dier in");
+                        int aantal;
+                        if (int.TryParse(Console.ReadLine(), out aantal))
+                        {
+                            for (int i = 0; i < aantal; i++)
+                            {
+                                dierManager.VoegDierToe(voedselType, formaat);
+                            }
+                        }
+
+                        else
+                        {
+                            Console.WriteLine("Ongeldige invoer voor het aantal, probeer opnieuw");
+                        }
+                        break;
+
+                    case "2": //OPTIE 2
+                        dierManager.ToonAlleDieren();
+                        break;
+
+                    case "3": //OPTIE 3
+                        dierManager.BerekenWagons();
+                        break;
+
+                    case "4": //OPTIE 4
+                        dierManager.ToonWagons();
+                        break;
+
+                    case "5": // OPTIE 5
+                        Environment.Exit(0);
+                        break; 
                 }
-
-                Console.WriteLine("Voer het voedseltype van het dier in (vlees/planten)");
-                string voedselType = Console.ReadLine().ToLower();
-
-                Console.WriteLine("Voer het formaat van het dier in (klein/middelmatig/groot)");
-                string formaat = Console.ReadLine().ToLower();
-
-                dierManager.VoegDierToe(voedselType, formaat);
             }
-            //
         }
     }
 }
