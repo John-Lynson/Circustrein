@@ -16,16 +16,34 @@ namespace Circustrein
             if (TotaalPunten + dier.Punten > 10)
                 return false;
 
-            if (Dieren.Any(w => w.VoedselType == "vlees" && w.Punten >= dier.Punten))
+            if (dier.VoedselType == VoedselType.Vlees && dier.Punten == 5)
+            {
+                return Dieren.Count == 0;
+            }
+
+            if (dier.VoedselType == VoedselType.Planten && dier.Punten == 5)
+            {
+                return !Dieren.Any(w => w.VoedselType == VoedselType.Vlees);
+            }
+
+            if (Dieren.Any(w => w.VoedselType == VoedselType.Vlees && w.Punten >= dier.Punten))
                 return false;
 
             return true;
         }
 
-        public void VoegDierToe (Dier dier)
+
+
+        public void VoegDierToe(Dier dier)
         {
-            Dieren.Add(dier);
-            TotaalPunten += dier.Punten;
+            Dier nieuwDier = new Dier
+            {
+                VoedselType = dier.VoedselType,
+                Formaat = dier.Formaat,
+                Aantal = 1 
+            };
+            Dieren.Add(nieuwDier);
+            TotaalPunten += nieuwDier.Punten;
         }
     }
 }

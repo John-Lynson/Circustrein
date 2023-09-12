@@ -51,7 +51,7 @@ namespace Circustrein
                         break;
 
                     case "3": //OPTIE 3
-                        dierManager.BerekenWagons();
+                        dierManager.BerekenWagons(); 
                         break;
 
                     case "4": //OPTIE 4

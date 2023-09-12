@@ -6,27 +6,24 @@ using System.Threading.Tasks;
 
 namespace Circustrein
 {
+    public enum VoedselType
+    {
+        Vlees,
+        Planten
+    }
+
+    public enum Formaat
+    {
+        Klein = 1,
+        Middelmatig = 3,
+        Groot = 5,
+    }
+
     public class Dier
     {
-        public string VoedselType { get; set; }
-        public string Formaat { get; set; }
-        public int Aantal { get; set; } 
-        public int Punten
-        {
-            get
-            {
-                switch (Formaat)
-                {
-                    case "klein":
-                        return 1;
-                    case "middelmatig":
-                        return 3;
-                    case "groot":
-                        return 5;
-                    default:
-                        return 0;
-                }
-            }
-        }
+        public VoedselType VoedselType { get; set; }
+        public Formaat Formaat { get; set; }
+        public int Aantal { get; set; }
+        public int Punten => (int)Formaat;
     }
 }    

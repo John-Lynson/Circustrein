@@ -13,15 +13,31 @@ namespace Circustrein
 
         public void VoegDierToe(string voedselType, string formaat)
         {
-            Dier bestaanddier = dieren.FirstOrDefault(d => d.VoedselType == voedselType && d.Formaat == formaat);
-            if (bestaanddier != null)
+            VoedselType parsedVoedselType;
+            Formaat parsedFormaat;
+
+            if (Enum.TryParse(voedselType, true, out parsedVoedselType) && Enum.TryParse(formaat, true, out parsedFormaat))
             {
-                bestaanddier.Aantal++;
+                Dier bestaanddier = dieren.FirstOrDefault(d => d.VoedselType == parsedVoedselType && d.Formaat == parsedFormaat);
+
+                if (bestaanddier != null)
+                {
+                    bestaanddier.Aantal++;
+                }
+                else
+                {
+                    Dier nieuwDier = new Dier
+                    {
+                        VoedselType = parsedVoedselType,
+                        Formaat = parsedFormaat,
+                        Aantal = 1
+                    };
+                    dieren.Add(nieuwDier);
+                }
             }
             else
             {
-                Dier nieuwDier = new Dier { VoedselType = voedselType, Formaat = formaat, Aantal = 1 };
-                dieren.Add(nieuwDier);
+                // Ongeldige enum-waarde, eventueel een foutbericht hier
             }
         }
 
@@ -34,7 +50,7 @@ namespace Circustrein
             }
         }
 
-        public void ToonWagons ()
+        public void ToonWagons()
         {
             Console.WriteLine("Wagons en hun dieren:");
             int wagonNummer = 1;
@@ -46,19 +62,18 @@ namespace Circustrein
                     Console.WriteLine($"  - Voedseltype: {dier.VoedselType}, Formaat: {dier.Formaat}, Aantal: {dier.Aantal}");
                 }
 
-                wagonNummer++; 
+                wagonNummer++;
             }
         }
 
         public void BerekenWagons()
         {
-            wagons.Clear(); 
-
+            wagons.Clear();
             dieren.Sort((a, b) => b.Punten.CompareTo(a.Punten));
 
             foreach (Dier dier in dieren)
             {
-                int overgeblevenAantal = dier.Aantal;
+                int overgeblevenAantal = dier.Aantal; // Gebruik van Aantal attribuut
 
                 foreach (Wagon wagon in wagons)
                 {
@@ -66,6 +81,11 @@ namespace Circustrein
                     {
                         wagon.VoegDierToe(dier);
                         overgeblevenAantal--;
+                    }
+
+                    if (overgeblevenAantal == 0)
+                    {
+                        break;
                     }
                 }
 
