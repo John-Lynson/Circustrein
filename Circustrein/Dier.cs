@@ -23,7 +23,7 @@ namespace Circustrein
     {
         public VoedselType VoedselType { get; set; }
         public Formaat Formaat { get; set; }
-        public int Aantal { get; set; }
+        public int AantalVanDatDier { get; set; }
         public int Punten => (int)Formaat;
     }
 }    

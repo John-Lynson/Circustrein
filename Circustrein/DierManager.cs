@@ -22,7 +22,7 @@ namespace Circustrein
 
                 if (bestaanddier != null)
                 {
-                    bestaanddier.Aantal++;
+                    bestaanddier.AantalVanDatDier++;
                 }
                 else
                 {
@@ -30,7 +30,7 @@ namespace Circustrein
                     {
                         VoedselType = parsedVoedselType,
                         Formaat = parsedFormaat,
-                        Aantal = 1
+                        AantalVanDatDier = 1
                     };
                     dieren.Add(nieuwDier);
                 }
@@ -46,7 +46,7 @@ namespace Circustrein
             Console.WriteLine("Alle dieren:");
             foreach (Dier dier in dieren)
             {
-                Console.WriteLine($"Voedseltype: {dier.VoedselType}, Formaat: {dier.Formaat}, Aantal: {dier.Aantal}");
+                Console.WriteLine($"Voedseltype: {dier.VoedselType}, Formaat: {dier.Formaat}, Aantal: {dier.AantalVanDatDier}");
             }
         }
 
@@ -59,7 +59,7 @@ namespace Circustrein
                 Console.WriteLine($"Wagon {wagonNummer}:");
                 foreach (Dier dier in wagon.Dieren)
                 {
-                    Console.WriteLine($"  - Voedseltype: {dier.VoedselType}, Formaat: {dier.Formaat}, Aantal: {dier.Aantal}");
+                    Console.WriteLine($"  - Voedseltype: {dier.VoedselType}, Formaat: {dier.Formaat}, Aantal: {dier.AantalVanDatDier}");
                 }
 
                 wagonNummer++;
@@ -69,17 +69,20 @@ namespace Circustrein
         public void BerekenWagons()
         {
             wagons.Clear();
-            dieren.Sort((a, b) => b.Punten.CompareTo(a.Punten));
 
-            foreach (Dier dier in dieren)
+            var gegroepeerdeDieren = dieren.GroupBy(d => new { d.VoedselType, d.Formaat })
+                                           .OrderByDescending(g => g.Key.Formaat); 
+
+            foreach (var groep in gegroepeerdeDieren)
             {
-                int overgeblevenAantal = dier.Aantal; // Gebruik van Aantal attribuut
+                Dier representatiefDier = groep.First();
+                int overgeblevenAantal = groep.Sum(d => d.AantalVanDatDier); 
 
                 foreach (Wagon wagon in wagons)
                 {
-                    while (wagon.KanDierToevoegen(dier) && overgeblevenAantal > 0)
+                    while (wagon.KanDierToevoegen(representatiefDier) && overgeblevenAantal > 0)
                     {
-                        wagon.VoegDierToe(dier);
+                        wagon.VoegDierToe(representatiefDier);
                         overgeblevenAantal--;
                     }
 
@@ -92,7 +95,7 @@ namespace Circustrein
                 while (overgeblevenAantal > 0)
                 {
                     Wagon nieuweWagon = new Wagon();
-                    nieuweWagon.VoegDierToe(dier);
+                    nieuweWagon.VoegDierToe(representatiefDier);
                     wagons.Add(nieuweWagon);
                     overgeblevenAantal--;
                 }

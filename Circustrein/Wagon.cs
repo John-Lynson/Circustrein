@@ -40,7 +40,7 @@ namespace Circustrein
             {
                 VoedselType = dier.VoedselType,
                 Formaat = dier.Formaat,
-                Aantal = 1 
+                AantalVanDatDier = 1 
             };
             Dieren.Add(nieuwDier);
             TotaalPunten += nieuwDier.Punten;
