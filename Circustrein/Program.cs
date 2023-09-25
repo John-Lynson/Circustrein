@@ -23,27 +23,8 @@ namespace Circustrein
 
                 switch (keuze)
                 {
-                    case "1": // OPTIE 1
-                        Console.WriteLine("Voer het voedseltype van het dier in (vlees/planten)");
-                        string voedselType = Console.ReadLine().ToLower();
-
-                        Console.WriteLine("Voer het formaat van het dier in: Klein/middelmatig/groot");
-                        string formaat = Console.ReadLine().ToLower();
-
-                        Console.WriteLine("Voer het aantal van dit type dier in");
-                        int aantal;
-                        if (int.TryParse(Console.ReadLine(), out aantal))
-                        {
-                            for (int i = 0; i < aantal; i++)
-                            {
-                                dierManager.VoegDierToe(voedselType, formaat);
-                            }
-                        }
-
-                        else
-                        {
-                            Console.WriteLine("Ongeldige invoer voor het aantal, probeer opnieuw");
-                        }
+                    case "1": //OPTIE 1
+                        VoegDierenToe(dierManager);
                         break;
 
                     case "2": //OPTIE 2
@@ -62,6 +43,27 @@ namespace Circustrein
                         Environment.Exit(0);
                         break; 
                 }
+            }
+        }
+
+        private static void VoegDierenToe(DierManager dierManager)
+        {
+            Console.WriteLine("Voer het voedseltype van het dier in (carnivoor/herbivoor)");
+            string voedselType = Console.ReadLine().ToLower();
+
+            Console.WriteLine("Voer het formaat van het dier in: Klein/medium/groot");
+            string formaat = Console.ReadLine().ToLower();
+
+            Console.WriteLine("Voer het aantal van dit type dier in");
+            if (!int.TryParse(Console.ReadLine(), out int aantal))
+            {
+                Console.WriteLine("Ongeldige invoer voor het aantal, probeer opnieuw.");
+                return;
+            }
+
+            for (int i = 0; i < aantal; i++)
+            {
+                dierManager.VoegDierToe(voedselType, formaat);
             }
         }
     }

@@ -8,14 +8,14 @@ namespace Circustrein
 {
     public enum VoedselType
     {
-        Vlees,
-        Planten
+        Carnivoor,
+        Herbivoor
     }
 
     public enum Formaat
     {
         Klein = 1,
-        Middelmatig = 3,
+        Medium = 3,
         Groot = 5,
     }
 

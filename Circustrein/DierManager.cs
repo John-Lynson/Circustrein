@@ -11,34 +11,28 @@ namespace Circustrein
         private List<Dier> dieren = new List<Dier>();
         private List<Wagon> wagons = new List<Wagon>();
 
-        public void VoegDierToe(string voedselType, string formaat)
+        public bool VoegDierToe(string voedselType, string formaat)
         {
-            VoedselType parsedVoedselType;
-            Formaat parsedFormaat;
-
-            if (Enum.TryParse(voedselType, true, out parsedVoedselType) && Enum.TryParse(formaat, true, out parsedFormaat))
+            if (Enum.TryParse(voedselType, true, out VoedselType parsedVoedselType) &&
+                Enum.TryParse(formaat, true, out Formaat parsedFormaat))
             {
                 Dier bestaanddier = dieren.FirstOrDefault(d => d.VoedselType == parsedVoedselType && d.Formaat == parsedFormaat);
-
                 if (bestaanddier != null)
                 {
                     bestaanddier.AantalVanDatDier++;
                 }
                 else
                 {
-                    Dier nieuwDier = new Dier
-                    {
-                        VoedselType = parsedVoedselType,
-                        Formaat = parsedFormaat,
-                        AantalVanDatDier = 1
-                    };
-                    dieren.Add(nieuwDier);
+                    dieren.Add(new Dier { VoedselType = parsedVoedselType, Formaat = parsedFormaat, AantalVanDatDier = 1 });
                 }
+                return true;
             }
-            else
-            {
-                // Ongeldige enum-waarde, eventueel een foutbericht hier
-            }
+            return false;
+        }
+
+        public int AantalWagons()
+        {
+            return wagons.Count;
         }
 
         public void ToonAlleDieren()
