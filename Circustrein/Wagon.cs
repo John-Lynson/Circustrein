@@ -35,14 +35,17 @@ namespace Circustrein
 
         public void VoegDierToe(Dier dier)
         {
-            Dier nieuwDier = new Dier
+            if (!Dieren.Any(d => d.VoedselType == dier.VoedselType && d.Formaat == dier.Formaat))
             {
-                VoedselType = dier.VoedselType,
-                Formaat = dier.Formaat,
-                AantalVanDatDier = 1 
-            };
-            Dieren.Add(nieuwDier);
-            TotaalPunten += nieuwDier.Punten;
+                Dieren.Add(dier);
+            }
+            else
+            {
+                var bestaandDier = Dieren.First(d => d.VoedselType == dier.VoedselType && d.Formaat == dier.Formaat);
+                bestaandDier.AantalVanDatDier += dier.AantalVanDatDier;
+            }
+
+            TotaalPunten += dier.Punten;
         }
     }
 }
